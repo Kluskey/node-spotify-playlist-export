@@ -1,0 +1,33 @@
+{
+  "name": "node-spotify-playlist-export",
+  "version": "1.0.0",
+  "description": "A simple NodeJS tool to export all song names & artists from a Spotify playlist.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kluskey/node-spotify-playlist-export.git"
+  },
+  "keywords": [
+    "node",
+    "spotify",
+    "playlist",
+    "export",
+    "songs",
+    "albums",
+    "artists",
+    "backup"
+  ],
+  "author": "Jared McCluskey",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Kluskey/node-spotify-playlist-export/issues"
+  },
+  "homepage": "https://github.com/Kluskey/node-spotify-playlist-export#readme",
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "spotify-web-api-node": "^3.1.1"
+  }
+}
