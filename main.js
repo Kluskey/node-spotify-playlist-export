@@ -38,12 +38,13 @@ function runBackup() {
         .then(function(totalTracks) {
             console.log('total:', totalTracks);
 
-            //we can only pull 100 at a time
-            // for (let index = 0; index < totalTracks; index += 100) {
-            //     console.log('Pulling batch:', index)
-            //     promiseArray.push(pullBatch(index))
-            // }
-            promiseArray.push(pullBatch(0))
+            // we can only pull 100 at a time
+            for (let index = 0; index < totalTracks; index += 100) {
+                console.log('Pulling batch:', index)
+                promiseArray.push(pullBatch(index))
+            }
+            //uncomment for single batch test
+            // promiseArray.push(pullBatch(0))
 
             return Promise.all(promiseArray)
         })
@@ -111,7 +112,7 @@ function getTotalTracks() {
 
 function addTrackToExport(trackName, artistName, albumName, url) {
     let trackString = trackName + " | " + artistName + " | " + albumName + " | " + url + "\n";
-    console.log(trackString);
+    // console.log(trackString);
     tracksArray.push(trackString);
 
 }
@@ -120,6 +121,6 @@ function writeExportsToFile() {
     console.log("Writing tracks to file... Please wait.");
     fs.writeFile('backup.txt', tracksArray.join(""), (err) => {
         if (err) throw err;
-        console.log('The file has been saved!');
+        console.log(tracksArray.length + ' tracks have been saved!');
     });
 }
