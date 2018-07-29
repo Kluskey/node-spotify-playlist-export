@@ -1,4 +1,5 @@
 require('dotenv').config();
+const fs = require('fs');
 const SpotifyWebApi = require('spotify-web-api-node');
 const Promise = require('bluebird');
 
@@ -42,7 +43,7 @@ function runBackup() {
             //     console.log('Pulling batch:', index)
             //     promiseArray.push(pullBatch(index))
             // }
-            pullBatch(0);
+            promiseArray.push(pullBatch(0))
 
             return Promise.all(promiseArray)
         })
@@ -73,9 +74,12 @@ function pullBatch(startIndex) {
                         // console.log(element.name);
                         artistNames.push(artist.name)
                     });
+                    // console.log('name:', item.track.name);
+
                     addTrackToExport(item.track.name, artistNames.join(", "), item.track.album.name, item.track.external_urls.spotify);
                 });
 
+                resolve();
 
             }, function(err) {
                 console.log('Something went wrong!', err);
@@ -106,12 +110,16 @@ function getTotalTracks() {
 }
 
 function addTrackToExport(trackName, artistName, albumName, url) {
-    let trackString = trackName + " | " + artistName + " | " + albumName + " | " + url;
+    let trackString = trackName + " | " + artistName + " | " + albumName + " | " + url + "\n";
     console.log(trackString);
+    tracksArray.push(trackString);
 
 }
 
 function writeExportsToFile() {
     console.log("Writing tracks to file... Please wait.");
-
+    fs.writeFile('backup.txt', tracksArray.join(""), (err) => {
+        if (err) throw err;
+        console.log('The file has been saved!');
+    });
 }
