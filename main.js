@@ -2,6 +2,8 @@ require('dotenv').config();
 const fs = require('fs');
 const SpotifyWebApi = require('spotify-web-api-node');
 const Promise = require('bluebird');
+const moment = require('moment');
+const _ = require('underscore');
 
 var spotifyApi = new SpotifyWebApi({
     clientId: process.env.clientId,
@@ -10,6 +12,7 @@ var spotifyApi = new SpotifyWebApi({
 
 var promiseArray = [];
 var tracksArray = [];
+var tracksArrayRaw = [];
 var totalTracks = 0;
 var username = "kluskey";
 var playlistId = "5r9BATxFQONQs6EUdXncAX";
@@ -46,6 +49,9 @@ function runBackup() {
             return Promise.all(promiseArray)
         })
         .then(function(result) {
+            processRawTrackArray();
+        })
+        .then(function(result) {
             writeExportsToFile();
         })
         .catch(function(error) {
@@ -66,15 +72,7 @@ function pullBatch(startIndex) {
                 // console.log(JSON.stringify(data, null, 2));
 
                 data.items.forEach(item => {
-                    // console.log(item.track.artists);
-                    let artistNames = [];
-                    item.track.artists.forEach(artist => {
-                        // console.log(element.name);
-                        artistNames.push(artist.name)
-                    });
-                    // console.log('name:', item.track.name);
-
-                    addTrackToExport(item.track.name, artistNames.join(", "), item.track.album.name, item.track.external_urls.spotify);
+                    tracksArrayRaw.push(item);
                 });
 
                 resolve();
@@ -107,8 +105,27 @@ function getTotalTracks() {
     });
 }
 
-function addTrackToExport(trackName, artistName, albumName, url) {
-    let trackString = trackName + " | " + artistName + " | " + albumName + " | " + url + "\n";
+function processRawTrackArray() {
+    return new Promise(function(resolve, reject) {
+
+        tracksArrayRaw.forEach(rawItem => {
+            // console.log(item.track.artists);
+            let artistNames = [];
+            rawItem.track.artists.forEach(artist => {
+                // console.log(element.name);
+                artistNames.push(artist.name)
+            });
+
+            addTrackToExport(rawItem.track.name, artistNames.join(", "), rawItem.track.album.name, rawItem.added_at, rawItem.track.external_urls.spotify);
+        });
+
+        resolve();
+
+    });
+}
+
+function addTrackToExport(trackName, artistName, albumName, date, url) {
+    let trackString = trackName + " | " + artistName + " | " + albumName + " | " + date + " | " + url + "\n";
     tracksArray.push(trackString);
 }
 
