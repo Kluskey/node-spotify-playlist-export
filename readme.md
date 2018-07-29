@@ -14,4 +14,6 @@ clientSecret=YOUR_SPOTIFY_CLIENT_SECRET
 4. Paste the Playlist ID of your desired playlist into the `playlistId` at the top of the file.
 5. Run `npm start` and your tracks will be saved with the title, artist, album, date added, and URL! All will be saved to a backup.txt file with information separated by pipe (`|`) characters.
 
+In the existing implementation, the code saves all tracks [from this playlist](https://open.spotify.com/user/kluskey/playlist/5r9BATxFQONQs6EUdXncAX?si=Oq9M6K_eR8Oi7h2Juv-vTA).
+
 Thanks! Let me know if you have any questions.
