@@ -26,10 +26,7 @@ spotifyApi.clientCredentialsGrant().then(
         runBackup();
     },
     function(err) {
-        console.log(
-            'Something went wrong when retrieving an access token',
-            err.message
-        );
+        console.log('Something went wrong when retrieving an access token', err.message);
     }
 );
 
@@ -112,9 +109,7 @@ function getTotalTracks() {
 
 function addTrackToExport(trackName, artistName, albumName, url) {
     let trackString = trackName + " | " + artistName + " | " + albumName + " | " + url + "\n";
-    // console.log(trackString);
     tracksArray.push(trackString);
-
 }
 
 function writeExportsToFile() {
