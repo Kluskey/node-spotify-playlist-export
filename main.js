@@ -5,6 +5,11 @@ const Promise = require('bluebird');
 const moment = require('moment');
 const _ = require('underscore');
 
+/**
+ * INPUT PLAYLIST ID HERE
+ */
+var playlistId = "5r9BATxFQONQs6EUdXncAX";
+
 var spotifyApi = new SpotifyWebApi({
     clientId: process.env.clientId,
     clientSecret: process.env.clientSecret
@@ -15,7 +20,7 @@ var tracksArray = [];
 var tracksArrayRaw = [];
 var totalTracks = 0;
 var username = "kluskey";
-var playlistId = "5r9BATxFQONQs6EUdXncAX";
+
 
 // Retrieve an access token
 spotifyApi.clientCredentialsGrant().then(
@@ -36,7 +41,7 @@ spotifyApi.clientCredentialsGrant().then(
 function runBackup() {
     getTotalTracks()
         .then(function(totalTracks) {
-            console.log('total:', totalTracks);
+            console.log('Total tracks to pull:', totalTracks);
 
             // we can only pull 100 at a time
             for (let index = 0; index < totalTracks; index += 100) {
